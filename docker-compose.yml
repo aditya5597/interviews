@@ -1,0 +1,26 @@
+version: "3.2"
+services:
+  backend:
+    restart: always
+    container_name: dart_backend
+    command : bash -c "python manage.py migrate &&
+                      python manage.py runserver 0.0.0.0:8000"
+
+    build:
+      context: ./dart_takehome/
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+  
+  frontend:
+    restart: always
+    container_name: dart_frontend
+    command : bash -c "npm run start"
+    build:
+      context: ./dart_frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+  
